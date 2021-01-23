@@ -7,10 +7,13 @@ var mydb = null;
 var collection_name = null;
 var collection;
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  collection_name = 'test'
-
+/*
+    post로 입력한 id와 password 받아와서
+    success or fail 로 response 보내면 됨.
+    api(post) : /login
+*/
+router.post('/', function(req, res, next) {
+  collection_name = 'user'
     mongoClient.connect('mongodb://localhost/', function(error, client){
         if (error) {
             console.log(error);
@@ -19,8 +22,19 @@ router.get('/', function(req, res, next) {
             mydb = client.db(db_name);
 
             collection = mydb.collection(collection_name);
-            collection.find({}).toArray(function(err, results){
-                res.status(200).json({'myCollection' : results});
+            console.log(req.body.id);
+            console.log(req.body.password);
+            collection.find({"id":req.body.id, "password":req.body.password}).toArray(function(err, result){
+                if(err){
+                    res.send({"Message":"err"});
+                }
+                if(result.length > 0){
+                    res.send({"Message":"verified"});
+                }
+                else{
+                    res.send({"Message":"fail"});
+                }
+                
               });
 
             //////////// For DEBUG //////
