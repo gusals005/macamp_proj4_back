@@ -12,12 +12,13 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
-    console.log(req.body);
-    try{
-        let newUser = new User(req.body);
-        output = await newUser.save();
-        res.status(200).json(output);
+router.post('/login', async (req, res) => {
+    try {
+        console.log(req.body);
+        let currentUser = await User.findOne({user_id: req.body.id, password: req.body.password});
+        console.log(currentUser);
+        if(currentUser === null)    res.status(404).send({"Message":"fail"});
+        else    res.status(200).json(currentUser);
     } catch (error) {
         res.status(500).json({message: error});
     }
