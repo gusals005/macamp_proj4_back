@@ -14,6 +14,7 @@ var collection;
 */
 router.post('/', function(req, res, next) {
   collection_name = 'user'
+    //db 연결
     mongoClient.connect('mongodb://localhost/', function(error, client){
         if (error) {
             console.log(error);
@@ -24,6 +25,8 @@ router.post('/', function(req, res, next) {
             collection = mydb.collection(collection_name);
             console.log(req.body.id);
             console.log(req.body.password);
+
+            //DB 내 search
             collection.find({"id":req.body.id, "password":req.body.password}).toArray(function(err, result){
                 if(err){
                     res.send({"Message":"err"});
@@ -53,8 +56,7 @@ router.post('/', function(req, res, next) {
                 }
             });
             /////////////////////////////
-
-        } 
+        }
     });
   
 });
