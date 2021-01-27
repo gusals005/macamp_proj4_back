@@ -9,6 +9,7 @@ const cors = require('cors');
 
 let indexRouter = require('./routes/index');
 let userRouter = require('./routes/users');
+let matchRouter = require('./routes/matches');
 
 const { normalize } = require('path');
 
@@ -47,6 +48,7 @@ mongoose.connect(
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
+app.use('/match', matchRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
