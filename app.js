@@ -6,9 +6,13 @@ let logger = require('morgan');
 let bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const morgan = require('morgan');
 
 let indexRouter = require('./routes/index');
-let userRouter = require('./routes/users');
+let userRouter = require('./routes/user');
+// let userRouter = require('./routes/users');
+
+const config = require('./config')
 
 const { normalize } = require('path');
 
@@ -18,6 +22,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
 const PORT = 8080;
 
 // const DBConfig = require('./.config_db.json')
@@ -25,8 +30,10 @@ const PORT = 8080;
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+app.set('jwt-secret', config.secret)
 
 app.use(logger('dev'));
+app.use(morgan('dev'))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -36,7 +43,7 @@ app.use(cors());
 // connect to DB
 // console.log(`mongodb://${DBConfig.username}:${DBConfig.passwd}@localhost:27017/${DBConfig.db}`);
 mongoose.connect(
-  `mongodb://192.249.18.232:27017/totonono`, {
+  `mongodb://192.249.18.246:27017/totonono`, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   useFindAndModify: false
