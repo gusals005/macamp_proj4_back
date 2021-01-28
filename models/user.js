@@ -1,5 +1,6 @@
-const mongoose = require('mongoose')
-var Schema = mongoose.Schema
+const mongoose = require('mongoose');
+const Betting = require('./betting');
+var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
     user_id: { type: String, required: true },
@@ -7,7 +8,7 @@ var userSchema = new Schema({
     name: { type: String, required: true },
     principal: {type:Number, required:true},
     coin: { type: Number, required: true },
-    betting: [String],
+    betting: [Betting.schema],
     signUpDate: { type: Date, default: Date.now() }
 });
 

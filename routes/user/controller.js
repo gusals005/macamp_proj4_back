@@ -68,3 +68,51 @@ exports.check = (req, res) => {
         info: req.decoded
     })
 }
+
+exports.addcoin = async (req, res) => {
+    try{
+        //req에는 user_id가
+        console.log(req.body);
+        const currentUser = await User.findOne({user_id:req.body.user_id});
+        console.log("nowUser", currentUser);
+
+        let coin_add = currentUser.coin + 10000;
+        let principal_add = currentUser.principal + 10000;
+
+        await User.update({user_id:req.body.user_id}, {coin:coin_add, principal:principal_add});
+
+        res.status(200).send({message:"success"});
+    }
+    catch(err){
+        res.status(500).json({message: error});
+    }
+}
+
+exports.deleteuser = async (req, res) => {
+    //post 로 받아서 없애자.
+    //user_id 를 받아
+    try{
+        //req에는 user_id가
+        console.log(req.body);``
+        const currentUser = await User.deleteOne({user_id:req.body.user_id});
+        console.log("nowUser", currentUser);
+
+        res.status(200).send({message:"success"});
+    }
+    catch(err){
+        res.status(500).json({message: error});
+    }
+}
+
+exports.finduser = async (req, res) => {
+    try{
+        console.log(req.body);
+        const currentUser = await User.findOne({user_id:req.body.user_id});
+        console.log("nowUser", currentUser);
+
+        res.status(200).send(currentUser);
+    }
+    catch(err){
+        res.status(500).json({message: error});
+    }
+}

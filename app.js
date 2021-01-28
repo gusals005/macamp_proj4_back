@@ -10,8 +10,9 @@ const morgan = require('morgan');
 
 let indexRouter = require('./routes/index');
 
-let matchRouter = require('./routes/matches');
+let matchRouter = require('./routes/match');
 let userRouter = require('./routes/user');
+let bettingRouter = require('./routes/betting');
 
 const config = require('./config')
 
@@ -57,6 +58,7 @@ mongoose.connect(
 app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use('/match', matchRouter);
+app.use('/betting', bettingRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

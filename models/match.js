@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const Betting = require('./betting');
+
 var Schema = mongoose.Schema
 
 var matchSchema = new Schema({
@@ -12,8 +14,8 @@ var matchSchema = new Schema({
     away_season_stat: { type: String, required: true },
     win_odds: Number,
     lose_odds: Number,
-    win_betting: [String],
-    lose_betting: [String]
+    win_betting: [Betting.schema],
+    lose_betting: [Betting.schema]
 });
 
 module.exports = mongoose.model("match", matchSchema);
