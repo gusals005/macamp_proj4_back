@@ -14,6 +14,7 @@ router.get('/', async (req, res) => {
 router.post('/signup', controller.signup)
 router.post('/login', controller.login)
 router.post('/addcoin', controller.addcoin)
+router.post('/deletecoin', controller.deletecoin)
 router.post('/deleteuser', controller.deleteuser)
 router.post('/finduser', controller.finduser)
 

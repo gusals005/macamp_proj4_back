@@ -104,8 +104,12 @@ router.post('/betting', async (req, res) => {
         console.log(req.body);
         
         //1. betting 정보 만들어서 넣기
-        let new_betting = new Betting(req.body);
-        
+        let new_betting = new Betting(req.body.input);
+        console.log(new_betting);
+
+        if(req.body.isAipick == 1)
+            new_betting.amount -= 1000;
+
         new_betting.save(function(err){
             if(err){
                 console.err(err);
@@ -114,13 +118,13 @@ router.post('/betting', async (req, res) => {
             }
         });
 
-        const match_o_id = new ObjectId(req.body.match_id);
+        const match_o_id = new ObjectId(req.body.input.match_id);
         let now_match = await Match.findOne({_id:match_o_id});
         console.log(now_match);
         let betting = [];
 
         //2.이 베팅정보를 match_id가 맞는 match에다가 넣어주기.
-        switch(req.body.prediction){
+        switch(req.body.input.prediction){
             case "WIN" :
                 betting = now_match.win_betting;
                 betting.push(new_betting);
@@ -137,14 +141,14 @@ router.post('/betting', async (req, res) => {
 
         //3~4 | 그 betting 정보를 해당 user 데이터 안에 넣어준다.
         //    | user 데이터 안에 coin을 베팅한 금액만큼 빼준다.
-        const user = await User.findOne({user_id:req.body.user_id});
+        const user = await User.findOne({user_id:req.body.input.user_id});
         let user_betting = user.betting;
         let user_coin = user.coin;
 
         user_betting.push(new_betting);
-        user_coin = user_coin - req.body.amount;
+        user_coin = user_coin - req.body.input.amount;
 
-        await User.update({user_id:req.body.user_id}, {coin :user_coin ,betting:user_betting});
+        await User.update({user_id:req.body.input.user_id}, {coin :user_coin ,betting:user_betting});
 
         
         //5. 배당률 계산을 새로 하기.

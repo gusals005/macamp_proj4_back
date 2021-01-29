@@ -15,7 +15,8 @@ var matchSchema = new Schema({
     win_odds: Number,
     lose_odds: Number,
     win_betting: [Betting.schema],
-    lose_betting: [Betting.schema]
+    lose_betting: [Betting.schema],
+    aipick: String
 });
 
 module.exports = mongoose.model("match", matchSchema);
